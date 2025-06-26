@@ -1,13 +1,11 @@
 FROM tomcat:8-jre8
 MAINTAINER "valaxytech@gmail.com"
 
-# Remove default Tomcat webapps (optional)
+# Optional: Remove default Tomcat apps
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy your WAR file into the webapps directory
-COPY webapp.war /usr/local/tomcat/webapps/ROOT.war
+# Copy the WAR file from webapp/target to Tomcat's webapps directory
+COPY webapp/target/webapp.war /usr/local/tomcat/webapps/ROOT.war
 
-# Expose the default Tomcat port
+# Expose Tomcat default port
 EXPOSE 8080
-
-# Start Tomcat (CMD is already set by base image, so no need to override it)
