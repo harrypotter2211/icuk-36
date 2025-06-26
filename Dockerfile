@@ -1,12 +1,11 @@
-# Use Tomcat base image
-FROM tomcat:8-jre8
-MAINTAINER "valaxytech@gmail.com"
+# Use JDK-only image for runtime (smaller size)
+FROM eclipse-temurin:17-jdk
 
-# Optional: clean default apps
-RUN rm -rf /usr/local/tomcat/webapps/*
+# Create working directory
+WORKDIR /app
 
-# Copy your WAR to ROOT.war so it becomes the default app
-COPY webapp/target/webapp.war /usr/local/tomcat/webapps/ROOT.war
+# Copy built JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose the default Tomcat port
-EXPOSE 8080
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
